@@ -320,8 +320,7 @@ Terrain exaggerated for clarity; beams and rings are illustrations.
 
 This is a **beta**. Please open an issue if something breaks.
 
-- **Tested end to end:** Windows 11 (fresh clone, GPU rendering), Linux/WSL (software rendering), the free Edge voice and the ElevenLabs voice (Thai, `eleven_v3`).
-- **Not yet tested:** macOS, NVIDIA/Intel GPUs.
+- **Tested end to end** on Windows 11 (GPU rendering) and Linux, with both the free Edge voice and the ElevenLabs voice (Thai, `eleven_v3`). Other systems should work too; if something breaks, please open an issue.
 - **Not one-click:** framing takes a few rounds of stills per clip.
 - **Thai with Edge TTS:** captions often show only one or two words at a time, because its word timing is coarse. ElevenLabs gives smoother captions.
 - **Map graphics:** outlines look soft in close-ups; beacons can look like flat bars from some angles.
