@@ -280,7 +280,7 @@ def main(clip):
     write_world(clip, spec, tl)
     (clip / "build/meta.json").write_text(json.dumps(dict(end=tl["end"], total=total, fps=FPS)), encoding="utf-8")
     print(f"\n{clip.name}: voice {tl['end']:.1f}s, video {total:.1f}s")
-    print(f"next:  node {HERE / 'render.mjs'} {clip} --times 2,5,9   (stills first)\n       node {HERE / 'render.mjs'} {clip}\n       {sys.executable} {HERE / 'encode.py'} {clip}")
+    print(f"next:  node {HERE / 'render.mjs'} {clip} --times 3,8,15   (stills first)\n       node {HERE / 'render.mjs'} {clip}\n       {sys.executable} {HERE / 'encode.py'} {clip} v1")
 
 
 if __name__ == "__main__":

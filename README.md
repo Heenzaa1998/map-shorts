@@ -27,7 +27,7 @@ map-shorts คือ skill ฟรีสำหรับ Claude Code ใช้ท�
 **ขั้นที่ 1: ติดตั้ง** เปิด Claude Code ในโฟลเดอร์ว่างๆ แล้วคัดลอกข้อความนี้ไปวางทั้งก้อน
 
 ```text
-ติดตั้ง map-shorts ให้หน่อย: clone https://github.com/Heenzaa1998/map-shorts ลงโฟลเดอร์นี้ แล้วทำตามหัวข้อ Install ใน README.md ให้ครบทุกขั้น ถ้าเครื่องยังไม่มี Python, Node.js หรือ ffmpeg ให้บอกคำสั่งติดตั้งที่เหมาะกับระบบของฉัน และขออนุญาตก่อนติดตั้งทุกครั้ง จากนั้นคัดลอกโฟลเดอร์ skill/map-shorts ไปไว้ที่ ~/.claude/skills/ แล้วรัน check_setup.py จนผ่านทุกข้อ สุดท้ายทำคลิปตัวอย่าง examples/fuji ให้ฉันดู
+ติดตั้ง map-shorts ให้หน่อย: clone https://github.com/Heenzaa1998/map-shorts ลงโฟลเดอร์นี้ แล้วทำตามหัวข้อ Install ใน README.md ให้ครบทุกขั้น ถ้าเครื่องยังไม่มี Python, Node.js หรือ ffmpeg ให้บอกคำสั่งติดตั้งที่เหมาะกับระบบของฉัน และขออนุญาตก่อนติดตั้งทุกครั้ง จากนั้นคัดลอกโฟลเดอร์ skill/map-shorts ไปไว้ที่ ~/.claude/skills/ แล้วรัน check_setup.py จนไม่มีบรรทัด -- เหลือ (บรรทัด opt ข้ามได้) สุดท้ายทำคลิปตัวอย่าง examples/fuji ให้ฉันดู โดยส่งภาพนิ่งให้ดูก่อน และถ้าเครื่องไม่มีการ์ดจอให้บอกก่อนเรนเดอร์เต็ม
 ```
 
 **ขั้นที่ 2: สั่งทำคลิป** เช่น
@@ -126,12 +126,16 @@ npx playwright-core install chromium
 python3 skill/map-shorts/scripts/check_setup.py .
 ```
 
-The check prints `OK` or `--` for each part and says how to fix anything missing. It changes nothing.
+Cloning creates a `map-shorts/` folder; run the rest inside it.
+
+The check prints `OK`, `--` (needed, with the fix) or `opt` (optional, e.g. an ElevenLabs key) for each part. It changes nothing.
+
+The browser goes to Playwright's cache (`~/.cache/ms-playwright`, on Windows `%LOCALAPPDATA%\ms-playwright`), about 200 MB. Use `npx playwright-core ...`, not `npx playwright ...`: the latter fetches a browser for a different version.
 
 **Or let Claude Code install it:** paste this into Claude Code in an empty folder:
 
 ```text
-Install map-shorts for me: clone https://github.com/Heenzaa1998/map-shorts into this folder and follow every step of the Install section in README.md. If Python, Node.js or ffmpeg is missing, tell me the right install command for my system and ask before installing anything. Then copy skill/map-shorts to ~/.claude/skills/, run check_setup.py until everything passes, and make the examples/fuji clip for me.
+Install map-shorts for me: clone https://github.com/Heenzaa1998/map-shorts into this folder and follow every step of the Install section in README.md. If Python, Node.js or ffmpeg is missing, tell me the right install command for my system and ask before installing anything. Then copy skill/map-shorts to ~/.claude/skills/, run check_setup.py until no "--" lines remain ("opt" lines are optional), and make the examples/fuji clip for me: show me stills first, and if there is no GPU tell me before the full render.
 ```
 
 **Add the skill to your agent.** For Claude Code:

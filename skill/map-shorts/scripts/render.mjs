@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // map-shorts render: opens clip/world/world.html in headless Chrome and screenshots window.render3d(t) for every frame.
 // Usage: node render.mjs <clip_dir> [--fps 30] [--out <dir>] [--times 0.5,3,12] [--from N --to M] [--chrome <path>] [--swiftshader]
-//   needs:  npm i playwright-core   (and a Chrome/Chromium: --chrome path, or PLAYWRIGHT's own `npx playwright install chromium`)
+//   needs:  npm install (playwright-core, pinned) and `npx playwright-core install chromium`, or pass --chrome <path>
 //   --times writes stills (t<sec>.jpg) for checking a shot before the full render.
 import { createServer } from "node:http";
 import { readFileSync, existsSync, mkdirSync, writeFileSync, statSync } from "node:fs";
@@ -49,3 +49,4 @@ if (times) {
   }
 }
 await browser.close(); server.close();
+process.stderr.write(`${times ? "stills" : "frames"} -> ${out}\n`);

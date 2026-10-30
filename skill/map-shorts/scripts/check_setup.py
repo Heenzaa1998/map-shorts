@@ -11,8 +11,9 @@ ok = True
 
 def line(good, what, fix=""):
     global ok
-    ok &= good or fix.startswith("(optional)")
-    print(("  OK   " if good else "  --   ") + what + ("" if good else f"\n         fix: {fix}"))
+    optional = fix.startswith("(optional)")
+    ok &= good or optional
+    print(("  OK   " if good else "  opt  " if optional else "  --   ") + what + ("" if good else f"\n         {'note' if optional else 'fix'}: {fix}"))
 
 
 print("map-shorts setup check\n")
@@ -25,11 +26,15 @@ HOW = {"ffmpeg": {"win32": "winget install --id Gyan.FFmpeg -e   (then open a ne
 plat = "win32" if sys.platform.startswith("win") else "darwin" if sys.platform == "darwin" else "linux"
 for tool in ("ffmpeg", "ffprobe", "node"):
     line(shutil.which(tool) is not None, tool, HOW.get("ffmpeg" if tool == "ffprobe" else tool, {}).get(plat, f"install {tool} and put it on PATH"))
-pw = any((d / "node_modules/playwright-core").exists() for d in [proj, *proj.parents, here, *here.parents])
-line(pw, "node package playwright-core", f"cd {proj} && npm i playwright-core && npx playwright install chromium")
+pw_dir = next((d for d in [proj, *proj.parents, here, *here.parents] if (d / "node_modules/playwright-core").exists()), None)
+line(pw_dir is not None, "node package playwright-core", f"cd {proj} && npm install   (in the map-shorts folder; or: npm i playwright-core@1.58.2)")
+if pw_dir and shutil.which("node"):       # the browser build that matches this playwright-core
+    r = subprocess.run(["node", "-e", "const c=require('playwright-core').chromium;console.log(c.executablePath())"], cwd=pw_dir, capture_output=True, text=True)
+    exe = r.stdout.strip()
+    line(bool(exe) and Path(exe).exists(), "Chromium for playwright-core", f"cd {pw_dir} && npx playwright-core install chromium   (not `npx playwright`; ~200 MB, goes to the ms-playwright cache), or pass --chrome <path> to render.mjs")
 line(bool(os.environ.get("ELEVENLABS_API_KEY")), "ELEVENLABS_API_KEY set (final-quality voice)",
      "(optional) only needed for the final voice; the free Edge voice is for drafts, not monetised videos")
 for f in ("template/data/blue-marble.jpg", "template/data/ne10_countries.geojson", "template/vendor/three.min.js", "template/fonts/Kanit-Bold.ttf"):
     line((here.parent / f).exists(), f"skill file {f}", "re-download the skill: a file is missing")
-print("\n" + ("Ready. Next: ask the agent for a clip, or try examples/fuji from the repository." if ok else "Fix the -- lines above, then run this again."))
+print("\n" + ("Ready (opt lines are optional). Next: ask the agent for a clip, or try examples/fuji from the repository." if ok else "Fix the -- lines above, then run this again (opt lines are optional)."))
 sys.exit(0 if ok else 1)

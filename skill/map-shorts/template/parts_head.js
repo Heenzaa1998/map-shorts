@@ -10,7 +10,7 @@ canvas{position:absolute;inset:0}
 .pin::after{content:"";position:absolute;left:50%;bottom:-16px;margin-left:-2px;width:4px;height:16px;background:#fff}
 .chip{position:absolute;transform:translate(-50%,-50%);padding:10px 30px;border-radius:20px;white-space:nowrap;font-size:56px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .chip small{display:block;font:30px UI;opacity:.9;text-align:center}
-#credit{position:absolute;left:0;right:0;bottom:64px;text-align:center;font:22px UI;color:rgba(255,255,255,.8);text-shadow:0 1px 4px rgba(0,0,0,.8)}
+#credit{position:absolute;left:56px;right:56px;bottom:64px;text-align:center;font:22px UI;color:rgba(255,255,255,.8);text-shadow:0 1px 4px rgba(0,0,0,.8)}
 /* glass UI (cards, pills, counters, captions) */
 .glass{position:absolute;background:rgba(14,20,30,.58);border:2px solid rgba(255,255,255,.16);border-radius:26px;box-shadow:0 14px 40px rgba(0,0,0,.45);backdrop-filter:blur(10px);color:#fff}
 .title{position:absolute;left:0;right:0;text-align:center;font-size:76px;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.8),0 0 2px #000;line-height:1.15}
