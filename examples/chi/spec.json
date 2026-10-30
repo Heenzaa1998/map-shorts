@@ -1,0 +1,12 @@
+{
+ "voice": {"provider": "edge", "voice": "th-TH-PremwadeeNeural"},
+ "lines": ["แม่น้ำชี ไหลผ่านภาคอีสาน ยาวประมาณ 765 กิโลเมตร", "แล้วไปรวมกับแม่น้ำมูล ก่อนออกแม่น้ำโขง"],
+ "spoken": {"765": "เจ็ดร้อยหกสิบห้า"},
+ "cam": [[2.4, 103.2, 15.9, 900, 30, 0, 0], ["B1", 103.6, 15.6, 700, 35, 0, 0], ["END", 103.6, 15.6, 650, 35, 0, 0]],
+ "q": [{"type": "country", "names": ["KhonKaen_UdonThani"], "at": 0.3, "until": "END+1", "fill": "rgba(255,150,60,.25)", "stroke": "#FF8A3D", "lift": 20},
+       {"type": "path", "path": "chi", "color": "#FFC94A", "radius": 4, "at": 1.0, "draw": 2.0, "flow": 6, "speed": 0.1, "drop": 0.02}],
+ "ui": [{"type": "title", "text": "แม่น้ำที่ยาวที่สุด<br>ที่ไหลอยู่ในไทยทั้งสาย", "y": 240, "at": 0.2, "until": "@0:ยาว-0.15"},
+        {"type": "counter", "y": 240, "from_": 0, "to": 765, "t0": "@0:ยาว", "t1": "@0:กิโลเมตร>", "suffix": " กม.", "label": "แม่น้ำชี", "color": "#FFC94A", "at": "@0:ยาว", "until": "B1"},
+        {"type": "pill", "text": "แม่น้ำชี", "lon": 102.6, "lat": 16.3, "dot": "#FFC94A", "at": 1.5, "until": "END+1"}],
+ "credits": "ข้อมูล: Wikipedia (Chi River)"
+}

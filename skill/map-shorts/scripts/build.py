@@ -47,12 +47,14 @@ def tts_edge(text, out, voice):
                 elif ch["type"] == "WordBoundary":
                     s = ch["offset"] / 1e7
                     words.append((ch["text"], s, s + ch["duration"] / 1e7))
-    for k in range(4):
+    import time
+    for k in range(6):
         try:
             asyncio.run(go()); break
-        except Exception as e:      # the service drops now and then
-            if k == 3: raise
-            words.clear(); import time; time.sleep(2 + 2 * k)
+        except Exception as e:      # the free service drops requests now and then
+            if k == 5: sys.exit(f"Edge TTS gave no audio after 6 tries ({type(e).__name__}). The free service is unreliable: wait a minute and run build.py again "
+                                "(finished lines are cached), or use a licensed provider (voice.provider = elevenlabs).")
+            words.clear(); time.sleep(3 + 4 * k)
     return words or None
 
 

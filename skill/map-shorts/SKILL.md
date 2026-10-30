@@ -53,4 +53,4 @@ At the moments listed in `references/advice.md` (voice quality, slow rendering, 
 - `scripts/` check_setup.py, build.py, render.mjs, encode.py, make_site.py, make_geo.py
 - `template/` the three.js page (parts_*.js are assembled into world.html), bundled data, three.js, Kanit font
 - `references/` method.md (what makes these work), spec.md (format), thai.md (Thai voice/captions), qa.md, setup.md, licenses.md, advice.md (what to recommend to the user, and when)
-- `examples/fuji/` in the repository: a complete working clip
+- `examples/fuji/` (English) and `examples/chi/` (Thai) in the repository: complete working specs
