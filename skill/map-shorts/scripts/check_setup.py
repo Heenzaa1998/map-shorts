@@ -3,6 +3,7 @@
 Usage: check_setup.py [project_dir]   (project_dir = where you will run render.mjs, default: current folder)"""
 import importlib.util, json, os, shutil, subprocess, sys
 from pathlib import Path
+for _s in (sys.stdout, sys.stderr): _s.reconfigure(encoding="utf-8", errors="replace")   # Windows consoles default to a legacy code page
 
 proj = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve(); here = Path(__file__).resolve().parent
 ok = True
@@ -19,8 +20,11 @@ line(sys.version_info >= (3, 10), f"Python {sys.version.split()[0]} (3.10+)", "i
 for mod, pkg, opt in [("numpy", "numpy", 0), ("PIL", "pillow", 0), ("edge_tts", "edge-tts", 0),
                       ("pythainlp", "pythainlp", 1), ("shapefile", "pyshp", 1), ("shapely", "shapely", 1)]:
     line(importlib.util.find_spec(mod) is not None, f"python package {pkg}", ("(optional) " if opt else "") + f"pip install {pkg}")
+HOW = {"ffmpeg": {"win32": "winget install --id Gyan.FFmpeg -e   (then open a new terminal)", "darwin": "brew install ffmpeg", "linux": "sudo apt install ffmpeg"},
+       "node": {"win32": "winget install --id OpenJS.NodeJS.LTS -e   (then open a new terminal)", "darwin": "brew install node", "linux": "sudo apt install nodejs npm"}}
+plat = "win32" if sys.platform.startswith("win") else "darwin" if sys.platform == "darwin" else "linux"
 for tool in ("ffmpeg", "ffprobe", "node"):
-    line(shutil.which(tool) is not None, tool, f"install {tool} and put it on PATH")
+    line(shutil.which(tool) is not None, tool, HOW.get("ffmpeg" if tool == "ffprobe" else tool, {}).get(plat, f"install {tool} and put it on PATH"))
 pw = any((d / "node_modules/playwright-core").exists() for d in [proj, *proj.parents, here, *here.parents])
 line(pw, "node package playwright-core", f"cd {proj} && npm i playwright-core && npx playwright install chromium")
 line(bool(os.environ.get("ELEVENLABS_API_KEY")), "ELEVENLABS_API_KEY set (final-quality voice)",

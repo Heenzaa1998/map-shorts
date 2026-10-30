@@ -16,6 +16,7 @@ import subprocess
 import sys
 import urllib.request
 from pathlib import Path
+for _s in (sys.stdout, sys.stderr): _s.reconfigure(encoding="utf-8", errors="replace")   # Windows consoles default to a legacy code page
 
 HERE = Path(__file__).resolve().parent
 TPL = HERE.parent / "template"
@@ -245,21 +246,21 @@ def write_world(clip, spec, tl):
     if not (extra_dir / "region.json").exists():
         sys.exit(f"missing {extra_dir}/region.json. Make the wide map patch first:\n  python3 {HERE}/make_site.py {clip} --name region --box S N W E --zimg 8 --zter 7 --grid 512")
     for mf in sorted(extra_dir.glob("*.json")) if extra_dir.exists() else []:
-        n = mf.stem; pm[n] = json.loads(mf.read_text()); pm[n]["h"] = base64.b64encode(mf.with_suffix(".u16").read_bytes()).decode()
+        n = mf.stem; pm[n] = json.loads(mf.read_text(encoding="utf-8")); pm[n]["h"] = base64.b64encode(mf.with_suffix(".u16").read_bytes()).decode()
         shutil.copyfile(mf.with_suffix(".jpg"), w / "data" / f"{n}.jpg")
     names = {n for e in tl["q"] if e["type"] == "country" for n in e["names"]}
-    ne = json.loads((TPL / "data/ne10_countries.geojson").read_text())
+    ne = json.loads((TPL / "data/ne10_countries.geojson").read_text(encoding="utf-8"))
     countries = {}
     for f in ne["features"]:
         n = f["properties"]["ADMIN"]
         if n in names:
             g = f["geometry"]; polys = g["coordinates"] if g["type"] == "MultiPolygon" else [g["coordinates"]]
             countries[n] = [[[round(x, 3), round(y, 3)] for x, y in p[0]] for p in polys]
-    extra = json.loads((clip / "geo_extra.json").read_text()) if (clip / "geo_extra.json").exists() else {}
+    extra = json.loads((clip / "geo_extra.json").read_text(encoding="utf-8")) if (clip / "geo_extra.json").exists() else {}
     countries.update({n: v for n, v in extra.get("countries", {}).items() if n in names})
     miss = names - set(countries)
     if miss: sys.exit(f"unknown country/region names: {sorted(miss)} (countries use Natural Earth ADMIN names; regions come from geo_extra.json)")
-    (w / "data/geo.js").write_text("window.GEO=" + json.dumps({"patches": pm, "countries": countries, "paths": extra.get("paths", {})}, separators=(",", ":")) + ";")
+    (w / "data/geo.js").write_text("window.GEO=" + json.dumps({"patches": pm, "countries": countries, "paths": extra.get("paths", {})}, separators=(",", ":")) + ";", encoding="utf-8")
     lo0, la0 = spec["cam"][0][1], spec["cam"][0][2]
     (w / "data/timeline.js").write_text("window.TIMELINE = " + json.dumps(dict(cam=tl["cam"], site=spec.get("site", [lo0, la0]), s={}, labels=[], clock=[], ui=tl["ui"], caps=tl["caps"],
                                         credits=tl["credits"], q=tl["q"], cols=[], end=tl["end"], relief=tl["relief"], logo=spec.get("logo", ""),
@@ -271,15 +272,15 @@ def main(clip):
     clip = Path(clip).resolve(); spec = json.loads((clip / "spec.json").read_text(encoding="utf-8"))
     (clip / "build").mkdir(exist_ok=True)
     beats = narrate(clip, spec)
-    (clip / "build/timing.json").write_text(json.dumps([{k: b[k] for k in ("start", "end", "words")} for b in beats], ensure_ascii=False))
+    (clip / "build/timing.json").write_text(json.dumps([{k: b[k] for k in ("start", "end", "words")} for b in beats], ensure_ascii=False), encoding="utf-8")
     tl, tm = compile_spec(clip, spec, beats)
     spec = dict(spec, sfx_files=[[tm(t), *r] for t, *r in spec.get("sfx_files", [])])
     total = tl["end"] + 1.0
     mix(clip, beats, spec, total, clip / "build/voice.m4a")
     write_world(clip, spec, tl)
-    (clip / "build/meta.json").write_text(json.dumps(dict(end=tl["end"], total=total, fps=FPS)))
+    (clip / "build/meta.json").write_text(json.dumps(dict(end=tl["end"], total=total, fps=FPS)), encoding="utf-8")
     print(f"\n{clip.name}: voice {tl['end']:.1f}s, video {total:.1f}s")
-    print(f"next:  node {HERE}/render.mjs {clip} && python3 {HERE}/encode.py {clip}")
+    print(f"next:  node {HERE / 'render.mjs'} {clip} --times 2,5,9   (stills first)\n       node {HERE / 'render.mjs'} {clip}\n       {sys.executable} {HERE / 'encode.py'} {clip}")
 
 
 if __name__ == "__main__":

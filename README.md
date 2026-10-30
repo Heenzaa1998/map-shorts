@@ -18,7 +18,36 @@ You (or your agent) write a short script and a `spec.json`. map-shorts voices it
 
 ---
 
+## เริ่มต้นใช้งาน (ภาษาไทย)
+
+map-shorts คือ skill ฟรีสำหรับ Claude Code ใช้ทำคลิปแนวตั้งอธิบายเรื่องราวบนแผนที่ 3D: กล้องดิ่งจากลูกโลกลงไปยังภูมิประเทศจริงในช็อตเดียว มีเสียงพากย์ ซับขึ้นตามคำพูด การ์ดข้อมูล และเส้นแม่น้ำหรือเขตจังหวัดบนแผนที่ ได้ไฟล์ MP4 ขนาด 1080×1920 พร้อมลง Shorts, Reels หรือ TikTok
+
+**สิ่งที่ต้องมี:** [Claude Code](https://claude.com/claude-code) อย่างเดียว ที่เหลือให้ Claude ติดตั้งให้
+
+**ขั้นที่ 1: ติดตั้ง** เปิด Claude Code ในโฟลเดอร์ว่างๆ แล้วคัดลอกข้อความนี้ไปวางทั้งก้อน
+
+```text
+ติดตั้ง map-shorts ให้หน่อย: clone https://github.com/Heenzaa1998/map-shorts ลงโฟลเดอร์นี้ แล้วทำตามหัวข้อ Install ใน README.md ให้ครบทุกขั้น ถ้าเครื่องยังไม่มี Python, Node.js หรือ ffmpeg ให้บอกคำสั่งติดตั้งที่เหมาะกับระบบของฉัน และขออนุญาตก่อนติดตั้งทุกครั้ง จากนั้นคัดลอกโฟลเดอร์ skill/map-shorts ไปไว้ที่ ~/.claude/skills/ แล้วรัน check_setup.py จนผ่านทุกข้อ สุดท้ายทำคลิปตัวอย่าง examples/fuji ให้ฉันดู
+```
+
+**ขั้นที่ 2: สั่งทำคลิป** เช่น
+
+```text
+ทำคลิป map-shorts เรื่องทำไมกรุงเทพถึงน้ำท่วมง่าย เป็นภาษาไทย
+```
+
+Claude จะถามคำถามสั้นๆ ก่อน (หัวข้อ คนดู ช่องหารายได้หรือยัง ใช้เสียงอะไร) จากนั้นเสนอมุมเล่า เขียนสคริปต์ให้คุณอนุมัติ แล้วส่งภาพตัวอย่างให้ดูก่อนเรนเดอร์จริง
+
+**ต้องรู้ก่อนใช้**
+- **เสียงพากย์:** เสียงฟรี (Edge TTS) ใช้ทำร่างได้เท่านั้น ห้ามใช้กับช่องที่หารายได้ ถ้าจะลงจริงให้ใช้ ElevenLabs แบบเสียเงิน ([รายละเอียด](#voices))
+- **ความเร็ว:** เครื่องที่มีการ์ดจอ (รวมถึงการ์ดจอในตัวของโน้ตบุ๊กรุ่นใหม่) เรนเดอร์คลิป 30 วินาทีเสร็จในราว 1 นาที ถ้าไม่มีจะช้ามาก (ราว 30 นาที)
+- **เครดิต:** ต้องใส่เครดิตภาพดาวเทียมและข้อมูลความสูงไว้ในคำอธิบายคลิปทุกครั้ง มีข้อความให้คัดลอกในหัวข้อ [Credits](#credits-you-must-put-on-your-videos)
+- **สถานะ:** ยังเป็นรุ่น beta ถ้าเจอปัญหา เปิด issue ได้ที่ GitHub
+
+---
+
 ## Contents
+- [เริ่มต้นใช้งาน (ภาษาไทย)](#เริ่มต้นใช้งาน-ภาษาไทย)
 - [What you get](#what-you-get)
 - [How it works](#how-it-works)
 - [Requirements](#requirements)
@@ -72,11 +101,11 @@ Every time in the spec can point at a spoken word: `"@2:Ash"` means "when the wo
 |---|---|---|
 | Python 3.10+ | build, map data | `python3 --version` |
 | Node.js 18+ | rendering | `node --version` |
-| ffmpeg + ffprobe | audio and video | `ffmpeg -version` |
+| ffmpeg + ffprobe | audio and video | `ffmpeg -version` (Windows: `winget install --id Gyan.FFmpeg -e`, macOS: `brew install ffmpeg`) |
 | Chrome or Chromium | renders the 3D page | installed by Playwright, or pass `--chrome <path>` |
 | Internet | voices, map tiles, Natural Earth (first run) | — |
 | An AI coding agent (recommended) | writes and tunes the spec with you | e.g. [Claude Code](https://claude.com/claude-code) |
-| A GPU (recommended) | about 10× faster renders | the render prints `renderer: ...` |
+| A GPU (recommended; a laptop iGPU is enough) | about 30× faster renders (measured) | the render prints `renderer: ...` |
 
 ## Install
 
@@ -89,15 +118,21 @@ cd map-shorts
 python3 -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# 3. the headless browser driver
+# 3. the headless browser driver (use playwright-core: it matches the pinned version)
 npm install
-npx playwright install chromium
+npx playwright-core install chromium
 
 # 4. check everything
 python3 skill/map-shorts/scripts/check_setup.py .
 ```
 
 The check prints `OK` or `--` for each part and says how to fix anything missing. It changes nothing.
+
+**Or let Claude Code install it:** paste this into Claude Code in an empty folder:
+
+```text
+Install map-shorts for me: clone https://github.com/Heenzaa1998/map-shorts into this folder and follow every step of the Install section in README.md. If Python, Node.js or ffmpeg is missing, tell me the right install command for my system and ask before installing anything. Then copy skill/map-shorts to ~/.claude/skills/, run check_setup.py until everything passes, and make the examples/fuji clip for me.
+```
 
 **Add the skill to your agent.** For Claude Code:
 
@@ -249,8 +284,8 @@ Terrain exaggerated for clarity; beams and rings are illustrations.
 
 | Setup | Speed | 30 s clip |
 |---|---|---|
-| Software rendering (`--swiftshader`, any machine) | ~0.5 frames/s | ~30 min |
-| GPU through Chrome | roughly 10× faster (measured on the pipeline this came from, not yet on this release) | a few minutes |
+| Software rendering (`--swiftshader`, any machine; also WSL) | ~0.5 frames/s (measured) | ~30 min |
+| GPU through Chrome (Windows 11, AMD Radeon 860M laptop iGPU) | ~16 frames/s (measured) | ~1 min |
 
 - The first line of a render tells you which renderer is in use. `SwiftShader` means software rendering.
 - **Split a long render** across processes:
@@ -258,10 +293,7 @@ Terrain exaggerated for clarity; beams and rings are illustrations.
   node render.mjs clip --from 0 --to 450 &
   node render.mjs clip --from 450 --to 942 &
   ```
-- **WSL:** Chrome inside WSL has no GPU. The original pipeline got its GPU by running the render with Windows Node and Windows Chrome (untested with this release):
-  ```bash
-  node.exe render.mjs ... --chrome "C:\Program Files\Google\Chrome\Application\chrome.exe"
-  ```
+- **WSL:** Chrome inside WSL has no GPU. Clone and run the project on the Windows side instead (Windows Python + Node); it uses the GPU directly.
 
 ## Troubleshooting
 
@@ -272,6 +304,8 @@ Terrain exaggerated for clarity; beams and rings are illustrations.
 | `camera keys must run forward in time` | Two camera keys resolved to the same or a backwards time. Move one to a later word. |
 | `unknown country/region names` | Countries use Natural Earth `ADMIN` names (e.g. `"United States of America"`). Regions come from `make_geo.py`. |
 | `playwright-core not found` | Run `npm i playwright-core` in the folder you run `render.mjs` from. |
+| `Executable doesn't exist at ...ms-playwright...` | Install the browser that matches the pinned version: `npx playwright-core install chromium` (not `npx playwright ...`). |
+| `encoded with libopenh264` | Your ffmpeg has no x264. The file is fine; install a full build (see Requirements) for the best quality. |
 | `Edge TTS gave no audio after 6 tries` | The free service is flaky. Wait a minute and run `build.py` again (finished lines are cached). |
 | `renderer: ... SwiftShader` and very slow | No GPU in use. See [Rendering speed](#rendering-speed-and-gpus). |
 | Blurry ground at mid zoom | Make the region patch cover the area the camera flies over, or raise `--zimg` by 1. |
@@ -282,8 +316,8 @@ Terrain exaggerated for clarity; beams and rings are illustrations.
 
 This is a **beta**. Please open an issue if something breaks.
 
-- **Tested:** Linux (Ubuntu on WSL) with software rendering.
-- **Not yet tested:** Windows, macOS, a GPU, the ElevenLabs path end to end.
+- **Tested end to end:** Windows 11 (fresh clone, GPU rendering), Linux/WSL (software rendering), the free Edge voice and the ElevenLabs voice (Thai, `eleven_v3`).
+- **Not yet tested:** macOS, NVIDIA/Intel GPUs.
 - **Not one-click:** framing takes a few rounds of stills per clip.
 - **Thai with Edge TTS:** captions often show only one or two words at a time, because its word timing is coarse. ElevenLabs gives smoother captions.
 - **Map graphics:** outlines look soft in close-ups; beacons can look like flat bars from some angles.

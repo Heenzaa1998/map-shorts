@@ -9,11 +9,12 @@ Two layers: a REGION patch (about 15-30 degrees wide, --zimg 8 --zter 7 --grid 5
 --zimg 12/13 --zter 11/12) for the close-up. Every clip needs a region patch (nothing is bundled: the data is downloaded from its source, not redistributed). Keep the box about 1-2 degrees wide for z13 (more tiles = slower);
 use lower zoom for a bigger box. Tiles are cached in <clip_dir>/.tiles. Requires: pip install pillow numpy
 """
-import argparse, json, math, socket, time, urllib.request
+import argparse, json, math, socket, sys, time, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import numpy as np
 from PIL import Image
+for _s in (sys.stdout, sys.stderr): _s.reconfigure(encoding="utf-8", errors="replace")   # Windows consoles default to a legacy code page
 
 _gai = socket.getaddrinfo
 socket.getaddrinfo = lambda h, p, f=0, *a, **k: _gai(h, p, socket.AF_INET, *a, **k)      # some networks stall on IPv6
@@ -63,4 +64,4 @@ if __name__ == "__main__":
     np.round(hs).astype(np.uint16).tofile(D / f"{a.name}.u16")
     S, N, W, E = a.box
     m = {"S": S, "N": N, "W": W, "E": E, "px": list(img.size), "gw": a.grid, "gd": gd, "hmax": float(hs.max()), "hmin": float(hs.min()), "hoff": 0}
-    (D / f"{a.name}.json").write_text(json.dumps(m)); print(m)
+    (D / f"{a.name}.json").write_text(json.dumps(m), encoding="utf-8"); print(m)

@@ -5,7 +5,7 @@ The agent should raise these at the moment they matter, once, in one or two sent
 | Moment | Say | Why |
 |---|---|---|
 | Before the first build | "Narration is the free Edge TTS draft voice. It sounds robotic, especially in Thai, and it is not licensed for monetised videos. For the final, use a voice service whose licence covers your use (e.g. ElevenLabs paid, Azure Speech paid). Want to set one up?" | Voice is the biggest quality gap, and the draft voice is not safe to publish commercially |
-| First full render, slow (`fps` under ~1 in the log) | "This is software rendering. On a machine with a GPU it is about 10x faster. Stills are fine for now; render the final on a GPU machine if you have one." | Avoids a 30-minute wait with no explanation |
+| First full render, slow (`fps` under ~1 in the log) | "This is software rendering. With a GPU (even a laptop iGPU on Windows) it is about 30x faster. Stills are fine for now; render the final on a GPU machine if you have one." | Avoids a 30-minute wait with no explanation |
 | User asks for sound | "Music and effects are not bundled. CC0 sources: freesound.org (filter CC0), pixabay.com/music (check each licence). Use sounds by meaning only: a soft pop when a card lands, a whoosh on a big move." | Licensing safety |
 | Spec written, before the full render | "Let me render 4-6 stills first so we can fix framing cheaply." | Stills cost seconds, a render costs minutes |
 | Topic weak (no stake, no wrong belief, no 3D payoff) | Say so and offer two stronger angles on the same subject (see method.md) | Topic matters more than polish |

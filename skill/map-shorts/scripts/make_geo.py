@@ -6,11 +6,12 @@ Usage: make_geo.py <clip_dir> [--region "Name=Country:Province1,Province2"]... [
   e.g. make_geo.py clips/x --region "Isan=Thailand:Khon Kaen,Udon Thani" --river "mun=Mun"
   --list-provinces Thailand   prints the province names Natural Earth uses for a country
 Needs: pip install pyshp shapely.  Natural Earth 10m files are downloaded once to ~/.cache/map-shorts."""
-import argparse, io, json, math, urllib.request, zipfile
+import argparse, io, json, math, sys, urllib.request, zipfile
 from pathlib import Path
 import shapefile
 from shapely.geometry import shape
 from shapely.ops import unary_union
+for _s in (sys.stdout, sys.stderr): _s.reconfigure(encoding="utf-8", errors="replace")   # Windows consoles default to a legacy code page
 
 CACHE = Path.home() / ".cache/map-shorts"
 NE = "https://naturalearth.s3.amazonaws.com/10m_{kind}/{name}.zip"
@@ -40,7 +41,7 @@ if __name__ == "__main__":
     a = ap.parse_args()
     if a.list_provinces:
         print(sorted(d["name"] for d, _ in records(ne("cultural", "ne_10m_admin_1_states_provinces")) if d["admin"] == a.list_provinces)); raise SystemExit
-    out_p = Path(a.clip) / "geo_extra.json"; out = json.loads(out_p.read_text()) if out_p.exists() else {"countries": {}, "paths": {}}
+    out_p = Path(a.clip) / "geo_extra.json"; out = json.loads(out_p.read_text(encoding="utf-8")) if out_p.exists() else {"countries": {}, "paths": {}}
     if a.region:
         recs = records(ne("cultural", "ne_10m_admin_1_states_provinces"))
         for spec in a.region:
@@ -69,4 +70,4 @@ if __name__ == "__main__":
                 else: chain = (p if k == -1 else p[::-1]) + chain
             out["paths"][key] = [[round(x, 4), round(y, 4)] for x, y, *_ in chain]
             print("river", key, len(chain), "points", round(sum(hav(chain[i], chain[i + 1]) for i in range(len(chain) - 1))), "km (flow direction not guaranteed: check the first point)")
-    out_p.write_text(json.dumps(out, separators=(",", ":")))
+    out_p.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")

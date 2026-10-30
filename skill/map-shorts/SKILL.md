@@ -29,7 +29,7 @@ Paths like `scripts/build.py` are relative to this skill's folder; call them by 
 4. **Spec** - write `<clip>/spec.json` (`references/spec.md` has every field). Camera keys and every element sit on phrases: `"@2:Ash"` = the moment the word "Ash" starts in line 2.
 5. **Build** - `python3 scripts/build.py <clip>` voices the lines, measures word timing, writes `<clip>/world/world.html`.
 6. **Look before the full render** - `node scripts/render.mjs <clip> --times 3,8,15,22` writes stills. Fix framing now (it costs seconds, the full render costs minutes). Use the checklist in `references/qa.md`. **Show the stills to the user.**
-7. **Render + encode** - `node scripts/render.mjs <clip>` then `python3 scripts/encode.py <clip> v1`. A GPU makes this 10x faster (`references/setup.md`).
+7. **Render + encode** - `node scripts/render.mjs <clip>` then `python3 scripts/encode.py <clip> v1`. A GPU makes this about 30x faster (`references/setup.md`).
 8. **Listen** - the user must listen to the voice once. Automatic checks cannot hear a wrong tone or a mispronounced name. Fix with the `spoken` map and rebuild (voice lines are cached, only changed lines cost).
 9. **Package** - title, description with sources and the credits listed in `references/licenses.md` (including the terrain notices for the area shown), AI-disclosure note. Never publish without the user's OK.
 
