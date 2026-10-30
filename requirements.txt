@@ -1,0 +1,7 @@
+numpy>=1.26
+pillow>=10.2
+edge-tts>=7.0
+# optional: Thai captions, regions and rivers
+pythainlp>=5.0
+pyshp>=3.0
+shapely>=2.0

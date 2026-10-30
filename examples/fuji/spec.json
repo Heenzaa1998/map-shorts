@@ -1,0 +1,45 @@
+{
+ "logo": "",
+ "voice": {"provider": "edge", "voice": "en-US-AriaNeural", "speed": 1.0},
+ "lines": [
+  "Mount Fuji is an active volcano, and it stands about a hundred kilometers from Tokyo.",
+  "It rises 3,776 meters, the tallest mountain in Japan.",
+  "Its last eruption began in 1707. Ash fell on the city then called Edo.",
+  "It has been quiet ever since, but Japan still counts it as active.",
+  "Which famous mountain should we put on the map next? Tell us in the comments."
+ ],
+ "spoken": {"1707": "seventeen oh seven", "3,776": "three thousand seven hundred seventy six"},
+ "site": [138.73, 35.36],
+ "relief": {"ex": 3, "exs": 2, "k0": 0.15, "at": "@0:Mount", "dur": 2.6, "hclamp": 4000},
+ "cam": [
+  [2.0, 137.0, 35.6, 2200, 0, 0, 0],
+  ["@0:about", 138.9, 35.5, 700, 25, 0, 0],
+  ["B1-0.2", 138.7274, 35.3606, 70, 48, 0, 8],
+  ["@1:tallest", 138.7274, 35.3606, 40, 54, 0, 8],
+  ["B2", 139.0, 35.5, 180, 40, 0, 2],
+  ["B3", 138.7274, 35.3606, 60, 50, 0, 8],
+  ["B4", 138.9, 35.5, 900, 15, 0, 0],
+  ["END", 138.9, 35.5, 1100, 0, 0, 0]
+ ],
+ "q": [
+  {"type": "beacon", "lon": 138.7274, "lat": 35.3606, "color": "#FF8A3D", "radiusKm": 0.8, "heightKm": 12, "at": "@0:Mount", "until": "B1"},
+  {"type": "beacon", "lon": 139.6917, "lat": 35.6895, "color": "#7FD1FF", "radiusKm": 2, "heightKm": 40, "at": "@0:Tokyo-0.2", "until": "B1"},
+  {"type": "line", "from": [138.7274, 35.3606], "to": [139.6917, 35.6895], "color": "#FFFFFF", "radius": 0.2, "at": "@0:hundred", "until": "B1", "draw": 1.2, "lift": 8},
+  {"type": "beacon", "lon": 138.7274, "lat": 35.3606, "color": "#FF4A1A", "radiusKm": 1.5, "heightKm": 15, "at": "@2:1707", "until": "B3", "grow": 0.9},
+  {"type": "ring", "center": [138.7274, 35.3606], "km": 12, "color": "#FFB27A", "radius": 0.3, "at": "@2:Ash", "until": "B3", "draw": 1.5},
+  {"type": "ring", "center": [138.7274, 35.3606], "km": 28, "color": "#FFD166", "radius": 0.3, "at": "@2:Edo", "until": "B3", "draw": 1.5}
+ ],
+ "ui": [
+  {"type": "title", "text": "Is Fuji still active?", "y": 240, "at": 0.2, "until": "@0:Mount+2.2"},
+  {"type": "pill", "text": "Mount Fuji", "lon": 138.7274, "lat": 35.3606, "h": 4, "dot": "#FF8A3D", "dy": -70, "at": "@0:Mount", "until": "B2"},
+  {"type": "pill", "text": "Tokyo", "lon": 139.6917, "lat": 35.6895, "dot": "#7FD1FF", "at": "@0:Tokyo-0.2", "until": "B1"},
+  {"type": "pill", "text": "~100 km", "lon": 139.2, "lat": 35.53, "dot": "#FFFFFF", "at": "@0:hundred+0.6", "until": "B1"},
+  {"type": "counter", "y": 240, "from_": 0, "to": 3776, "t0": "@1:rises", "t1": "@1:meters>", "suffix": " m", "label": "Mount Fuji", "color": "#FF8A3D", "at": "@1:rises", "until": "B2"},
+  {"type": "cards", "y": 240, "at": "@2:last", "until": "@2:Ash-0.1", "items": [{"icon": "flame", "text": "Last eruption", "sub": "1707"}]},
+  {"type": "cards", "y": 240, "at": "@2:Ash", "until": "B3", "items": [{"icon": "layers", "text": "Ash fell on Edo"}]},
+  {"type": "flash", "at": "@2:1707"},
+  {"type": "cards", "y": 240, "at": "@3:still", "until": "B4", "items": [{"icon": "report", "text": "Counted as active", "sub": "Japan Meteorological Agency"}]},
+  {"type": "title", "text": "Which mountain next?", "y": 240, "at": "@4:Which", "until": "END+1"}
+ ],
+ "credits": "Facts: Wikipedia (Mount Fuji, Hōei eruption), Japan Meteorological Agency · Terrain exaggerated for clarity"
+}

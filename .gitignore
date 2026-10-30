@@ -1,0 +1,13 @@
+.env
+*.mp3
+*.m4a
+*.mp4
+build/
+voice/
+.tiles/
+world/
+node_modules/
+__pycache__/
+data_extra/
+package-lock.json
+*.log

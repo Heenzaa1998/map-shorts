@@ -1,0 +1,7 @@
+{
+  "name": "map-shorts",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "dependencies": { "playwright-core": "1.58.2" }
+}
