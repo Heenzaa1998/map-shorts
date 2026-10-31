@@ -24,7 +24,7 @@ canvas{position:absolute;inset:0}
 .date{left:50%;transform:translateX(-50%);padding:10px 30px;font-size:42px;white-space:nowrap;border-radius:40px}
 .date i{display:inline-block;width:16px;height:16px;border-radius:50%;background:#FFB13B;margin-right:14px;vertical-align:middle;box-shadow:0 0 12px #FFB13B}
 .counter{left:50%;transform:translateX(-50%);padding:14px 50px 18px;text-align:center}
-.counter b{display:block;font-size:120px;line-height:1.05;letter-spacing:1px}
+.counter b{display:block;font-size:120px;line-height:1.05;letter-spacing:1px;white-space:nowrap}
 .counter span{font:34px UI;opacity:.9;white-space:nowrap}
 .counter.sm{padding:12px 34px 16px}.counter.sm b{font-size:100px}.counter.sm span{font-size:30px}
 .months{left:50%;transform:translateX(-50%);display:flex;gap:8px;padding:12px 14px;border-radius:22px}
